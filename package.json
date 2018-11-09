@@ -1,0 +1,28 @@
+{
+  "name": "site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "PORT=3000 node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "ejs-blocks": "^0.1.4",
+    "ejs-locals": "^1.0.2",
+    "express": "^4.16.4",
+    "jquery": "^3.3.1",
+    "mongoose": "^5.3.9",
+    "morgan": "^1.9.1",
+    "particles.js": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "jshint.enable": false
+}

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="style/materialize.min.css"
+        media="screen,projection">
+    <link type="text/css" rel="stylesheet" href="style/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title> <%= blocks.title%> </title>
+</head>
+<body>
+    <% include /header.ejs%>
+    <div id="particles-js"></div>
+    <%- body %>
+    <% include /footer.ejs%>
+    <% include /scripts.ejs%>
+</body>
+</html>
