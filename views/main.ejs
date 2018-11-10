@@ -8,17 +8,31 @@
         <a class="carousel-item" href="#four!"><img src="https://img2.goodfon.ru/original/1440x900/1/a5/larte-design-tesla-model-s-3453.jpg"></a>
         <a class="carousel-item" href="#four!"><img src="https://img3.goodfon.ru/original/1440x900/9/39/2015-larte-design-tesla-model-1901.jpg"></a>
     </div>
-    <div style="width:100%;height:0;padding-bottom:55%;position:relative;"><iframe src="https://giphy.com/embed/7A4MyY3mzHQN9hVTn7" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/annihilation-movie-7A4MyY3mzHQN9hVTn7"></a></p>
+    
     <div class="parallax-container">
         <div class="parallax"></div>
         </div>
         <div class="section white">
-        <div class="row container">
-            <h2 class="header">Parallax</h2>
-            <p class="grey-text text-darken-3 lighten-3">Parallax is an effect where the background content or image in this case, is moved at a different speed than the foreground content while scrolling.</p>
-        </div>
+            <div class="row container">
+                <h2 class="header">Parallax</h2>
+                <p class="grey-text text-darken-3 lighten-3">Parallax is an effect where the background content or image in this case, is moved at a different speed than the foreground content while scrolling.</p>
+            </div>
         </div>
         <div class="parallax-container">
         <div class="parallax"><img src="https://img4.goodfon.ru/original/1440x900/a/c9/tesla-roadster-2020-skorost.jpg"></div>
     </div>
 </main>
+<script type="text/javascript">
+setTimeout(() => {
+    $('.carousel').carousel({
+    duration: 200,
+    dist: -100,
+    fullWidth: true,
+    indicators: true
+});
+let carousel = M.Carousel.getInstance(document.querySelector('.carousel'));
+setInterval(() => {
+    carousel.next();
+}, 5000);
+}, 1000);
+</script>

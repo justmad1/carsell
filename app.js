@@ -4,12 +4,15 @@ const express = require('express'),
     path = require('path'),
     logger = require('morgan'),
     mongoose = require('mongoose'),
+    bcrypt = require('bcrypt-nodejs'),
     app = express();
 
 let Car = require('./models/car'),
     User = require('./models/user'),
-    Order = require('./models/order');
+    Order = require('./models/order'),
+    dataObject = {};
 
+//connection
 mongoose.connection
 .on('error', error => console.error(error))
 .on('close', () => console.log("closed"))
@@ -20,16 +23,22 @@ app.listen(3000, function () {
     console.log('Server started!');
 });
 
+//sets and uses
 app.engine('ejs', require('ejs-locals'));
 app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "media")));
 
+
+//routers
 app.get('/add', (req, res) => {
-    Car.find({}).then(cars => {
-        res.render('add', {cars: cars});
-    });
+    res.render('add');
+});
+
+app.get('/auth', (req, res) => {
+    res.render('auth');
 });
 
 app.get('/buy', (req, res) => {
@@ -49,6 +58,26 @@ app.post('/add', (req, res) => {
         complectation: req.body.complectation
     });
     res.redirect('/add');
+});
+
+app.post('/auth', (req, res) => {
+    dataObject = req.body;
+    console.log(dataObject)
+    if (dataObject.type === 'register') {
+        User.create({
+            fio: dataObject.fio,
+            login: dataObject.login,
+            password: dataObject.password
+        });
+        res.json({
+            res: 'Registered sucsessfully!'
+        });
+        
+    } else {
+
+    }
+
+    //res.redirect('/');
 });
 
 module.exports = app;
