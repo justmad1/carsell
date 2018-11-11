@@ -3,7 +3,12 @@
         <div class="nav-wrapper">
             <a href="/" class="brand-logo"> Cars <i style="margin-left: 22px;" class="small material-icons">time_to_leave</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="/auth">Авторизация</a></li>
+                <% if(user.id && user.login){ %>
+                    <li><a class="disabled" href="#"><%=user.login%></a></li>
+                    <li><a href="/logout">Выход</a></li>
+                <% } else{ %>
+                    <li><a href="/auth">Авторизация</a></li>
+                <% } %>
             </ul>
         </div>
         <div class="nav-content">

@@ -5,6 +5,8 @@ const express = require('express'),
     logger = require('morgan'),
     mongoose = require('mongoose'),
     bcrypt = require('bcrypt-nodejs'),
+    session = require('express-session'),
+    MongoStore = require('connect-mongo')(session),
     app = express();
 
 let Car = require('./models/car'),
@@ -15,7 +17,6 @@ let Car = require('./models/car'),
 //connection
 mongoose.connection
 .on('error', error => console.error(error))
-.on('close', () => console.log("closed"))
 .once('open', () => console.log("connected to database"));
 mongoose.connect(config.MONGO_URL, { useNewUrlParser: true});
 
@@ -24,6 +25,16 @@ app.listen(3000, function () {
 });
 
 //sets and uses
+app.use(
+    session({
+        secret: config.SESSION_SECRET,
+        resave: true,
+        saveUninitialized: false,
+        store: new MongoStore({
+            mongooseConnection: mongoose.connection
+        })
+    })
+);
 app.engine('ejs', require('ejs-locals'));
 app.set('view engine', 'ejs');
 app.use(logger('dev'));
@@ -34,12 +45,22 @@ app.use(express.static(path.join(__dirname, "media")));
 
 //routers
 app.get('/', (req, res) => {
-    res.render('main');
+    res.render('main', {
+        user: {
+            id: req.session.userId,
+            login: req.session.userLogin
+        }
+    });
 });
 
 
 app.get('/add', (req, res) => {
-    res.render('add');
+    res.render('add', {
+        user: {
+            id: req.session.userId,
+            login: req.session.userLogin
+        }
+    });
 });
 
 app.post('/add', (req, res) => {
@@ -54,14 +75,24 @@ app.post('/add', (req, res) => {
 
 app.get('/buy', (req, res) => {
     Car.find({}).then(cars => {
-        res.render('buy', {cars: cars});
+        res.render('buy', {cars: cars,
+            user: {
+                id: req.session.userId,
+                login: req.session.userLogin
+            }
+        });
     });
 });
 
 
 
 app.get('/auth', (req, res) => {
-    res.render('auth');
+    res.render('auth', {
+        user: {
+            id: req.session.userId,
+            login: req.session.userLogin
+        }
+    });
 });
 
 app.post('/register', (req, res) => {
@@ -73,7 +104,9 @@ app.post('/register', (req, res) => {
             login: dataObject.login,
             password: hash
         })
-        .then(() => {
+        .then(user => {
+            req.session.userId = user.id;
+            req.session.userLogin = user.login;
             res.json({
                 ok: true,
                 res: 'Вы зарегистрированы успешно!'
@@ -99,11 +132,14 @@ app.post('/login', (req, res) => {
     .then(user => {
         if (user) {
             bcrypt.compare(dataObject.password, user.password, function(err, r) {
-                if (r) 
+                if (r) {
+                    req.session.userId = user.id;
+                    req.session.userLogin = user.login;
                     res.json({
                         ok: true,
                         res: 'Успешно!'
                     });
+                }
                 else
                     res.json({
                         ok: true,
@@ -122,6 +158,12 @@ app.post('/login', (req, res) => {
             ok: true,
             res: 'Введенные данные не верны!'
         });
+    });
+});
+
+app.get('/logout',(req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/');
     });
 });
 

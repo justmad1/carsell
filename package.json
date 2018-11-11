@@ -13,10 +13,12 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
+    "connect-mongo": "^2.0.1",
     "ejs": "^2.6.1",
     "ejs-blocks": "^0.1.4",
     "ejs-locals": "^1.0.2",
     "express": "^4.16.4",
+    "express-session": "^1.15.6",
     "jquery": "^3.3.1",
     "mongoose": "^5.3.9",
     "morgan": "^1.9.1",
