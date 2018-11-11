@@ -33,22 +33,13 @@ app.use(express.static(path.join(__dirname, "media")));
 
 
 //routers
-app.get('/add', (req, res) => {
-    res.render('add');
-});
-
-app.get('/auth', (req, res) => {
-    res.render('auth');
-});
-
-app.get('/buy', (req, res) => {
-    Car.find({}).then(cars => {
-        res.render('buy', {cars: cars});
-    });
-});
-
 app.get('/', (req, res) => {
     res.render('main');
+});
+
+
+app.get('/add', (req, res) => {
+    res.render('add');
 });
 
 app.post('/add', (req, res) => {
@@ -60,24 +51,78 @@ app.post('/add', (req, res) => {
     res.redirect('/add');
 });
 
-app.post('/auth', (req, res) => {
+
+app.get('/buy', (req, res) => {
+    Car.find({}).then(cars => {
+        res.render('buy', {cars: cars});
+    });
+});
+
+
+
+app.get('/auth', (req, res) => {
+    res.render('auth');
+});
+
+app.post('/register', (req, res) => {
     dataObject = req.body;
-    console.log(dataObject)
-    if (dataObject.type === 'register') {
+
+    bcrypt.hash(dataObject.password, null, null, function(err, hash) {
         User.create({
             fio: dataObject.fio,
             login: dataObject.login,
-            password: dataObject.password
+            password: hash
+        })
+        .then(() => {
+            res.json({
+                ok: true,
+                res: 'Вы зарегистрированы успешно!'
+            });
+        })
+        .catch(err => {
+            if (err.code == 11000)
+                res.json({
+                    ok: false,
+                    res: 'Пользователь с таким логином уже существует!'
+                });
         });
-        res.json({
-            res: 'Registered sucsessfully!'
-        });
-        
-    } else {
-
-    }
+    });
 
     //res.redirect('/');
+});
+
+app.post('/login', (req, res) => {
+    dataObject = req.body;
+    User.findOne({
+        login: dataObject.login
+    })
+    .then(user => {
+        if (user) {
+            bcrypt.compare(dataObject.password, user.password, function(err, r) {
+                if (r) 
+                    res.json({
+                        ok: true,
+                        res: 'Успешно!'
+                    });
+                else
+                    res.json({
+                        ok: true,
+                        res: 'Введенные данные не верны!'
+                    });  
+            });
+        } else {
+            res.json({
+                ok: true,
+                res: 'Введенные данные не верны!'
+            });
+        }
+    })
+    .catch(error => {
+        res.json({
+            ok: true,
+            res: 'Введенные данные не верны!'
+        });
+    });
 });
 
 module.exports = app;

@@ -15,3 +15,10 @@ $(document).ready(function() {
     $('.parallax').parallax();
     $('.collapsible').collapsible();
 });
+
+document.body.onload = () => {
+    setTimeout(() => {
+        document.querySelector('.bg').classList.add('hidden');
+        document.querySelector('.car').classList.add('go');
+    }, 1000);
+}

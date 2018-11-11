@@ -8,13 +8,15 @@
         media="screen,projection">
     <link type="text/css" rel="stylesheet" href="style/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style/preloader.css">
     <title> <%= blocks.title%> </title>
 </head>
+<% include /header.ejs %>
 <body>
-    <% include /header.ejs%>
+    <% include /preloader.ejs %>
     <div id="particles-js"></div>
     <%- body %>
-    <% include /footer.ejs%>
-    <% include /scripts.ejs%>
+    <% include /scripts.ejs %>
 </body>
+<% include /footer.ejs %>
 </html>

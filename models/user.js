@@ -7,6 +7,7 @@ const schema = new Schema({
     },
     login: {
         type: String,
+        unique: true
     },
     password: {
         type: String,

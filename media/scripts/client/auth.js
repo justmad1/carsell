@@ -8,16 +8,23 @@ document.querySelector('.login').addEventListener('click', () => {
     login = document.querySelector('input#login').value;
     password = document.querySelector('input#password').value;
     data = {
-        type: 'login',
         password: password,
         login: login
     };
+
+    for (let key in data) {
+        if (data[key] == ''){
+            M.toast({html: 'Все поля должны быть заполнены!'});
+            return;
+        }
+    }
+
     console.log(data);
     $.ajax({
         type: "POST",
         data: JSON.stringify(data),
         contentType: 'application/json',
-        url: '/auth'
+        url: '/login'
     }).done(data => {
         M.toast({html: data.res});
     }).fail(console.log('failed'));
@@ -28,7 +35,6 @@ document.querySelector('.register').addEventListener('click', () => {
     login = document.querySelector('input#email').value;
     password = document.querySelector('input#new_password').value;
     data = {
-        type: 'register',
         fio: fio,
         password: password,
         login: login
@@ -45,8 +51,10 @@ document.querySelector('.register').addEventListener('click', () => {
         type: "POST",
         data: JSON.stringify(data),
         contentType: 'application/json',
-        url: '/auth'
+        url: '/register'
     }).done(data => {
         M.toast({html: data.res});
+        if (data.ok)
+            document.location.pathname = "/";
     });
 });
