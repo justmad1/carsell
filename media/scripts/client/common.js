@@ -1,4 +1,4 @@
-particlesJS.load('particles-js', 'scripts/assets/particles.json');
+//particlesJS.load('particles-js', 'scripts/assets/particles.json');
 document.querySelectorAll('.btn').forEach(item => {
     item.addEventListener('mouseenter', () => {
         item.classList.add("pulse");
@@ -12,10 +12,10 @@ $(document).ready(function() {
     $('select').formSelect();
     $('.tabs').tabs();
     $('.sidenav').sidenav();
-    $('.parallax').parallax();
     $('.collapsible').collapsible();
 });
 
+//preloader
 document.body.onload = () => {
     setTimeout(() => {
         document.querySelector('.bg').classList.add('hidden');
