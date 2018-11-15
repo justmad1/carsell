@@ -2,7 +2,43 @@
 <% block('title', "О нас")%>
 <main class="main">
     <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Adf1029035886a2a56a1d433abe17fe0c61d8c82b4d8475b72592862606a66a5e&amp;width=100%25&amp;height=600&amp;lang=ru_RU&amp;scroll=true"></script>
-    <div style="border: 1px solid red" class="container">
+    <div class="container">
+        <div class="flow-text info">
+            <blockquote>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quas exercitationem, quibusdam dolorem nulla, pariatur minima eveniet ex libero cum enim. Delectus, aliquam? Quod repudiandae esse sapiente maxime accusamus ducimus!
+                Qui dignissimos sunt vitae dolor eius necessitatibus. Est corrupti ut vero consequuntur velit voluptate expedita numquam aliquam ipsam praesentium quaerat exercitationem vitae sequi commodi, odit facilis eaque. Culpa, sint facere.
+            </blockquote>
+        </div>
+        <div class="add_feedback">
+            <% if(user.id && user.login){ %>
+                <h5 class="center-align">Напишите свой отзыв</h5>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="message" class="materialize-textarea" data-length="60"></textarea>
+                        <label for="message">Textarea</label>
+                    </div>
+                </div>
+                <button class="btn-large waves-effect waves-light" type="submit" name="action">Опубликовать
+                    <i class="material-icons right">send</i>
+                </button>
+            <% } else{ %>
+                <h5 class="center-align">Необходимо авторизоваться, чтобы оставлять отзывы</h5>
+            <% } %>
+        </div>
+
+        <div class="feedback">
+            <% f.forEach(item => {%>
+                <div class="card blue-grey">
+                    <div class="card-content white-text">
+                        <span class="card-title">
+                            <%= item.login %></span>
+                        <p>
+                            <%= item.message %>
+                        </p>
+                    </div>
+                </div>
+            <%})%>
+        </div>
 
     </div>
 </main>

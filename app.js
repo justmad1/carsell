@@ -12,6 +12,7 @@ const express = require('express'),
 let Car = require('./models/car'),
     User = require('./models/user'),
     Order = require('./models/order'),
+    Feedback = require('./models/feedback'),
     dataObject = {};
 
 //connection
@@ -85,11 +86,31 @@ app.get('/buy', (req, res) => {
 });
 
 app.get('/about', (req, res) => {
-    res.render('about', {
-        user: {
-            id: req.session.userId,
-            login: req.session.userLogin
-        }
+    Feedback.find({}).then(f => {
+        res.render('about', {f: f,
+            user: {
+                id: req.session.userId,
+                login: req.session.userLogin
+            },
+        });
+    });
+});
+
+app.post('/about', (req, res) => {
+    Feedback.create({
+        login: req.session.userLogin,
+        message: req.body.message
+    }).then((result) => {
+        Feedback.find({}).then(f => {
+            res.json({
+                ok: true,
+                data: f
+            });
+        });
+    }).catch((err) => {
+        res.json({
+            ok: false
+        });
     });
 });
 
@@ -118,8 +139,6 @@ app.post('/register', (req, res) => {
                 });
         });
     });
-
-    //res.redirect('/');
 });
 
 app.post('/login', (req, res) => {
