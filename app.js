@@ -84,10 +84,8 @@ app.get('/buy', (req, res) => {
     });
 });
 
-
-
-app.get('/auth', (req, res) => {
-    res.render('auth', {
+app.get('/about', (req, res) => {
+    res.render('about', {
         user: {
             id: req.session.userId,
             login: req.session.userLogin

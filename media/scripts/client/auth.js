@@ -19,7 +19,6 @@ document.querySelector('.login').addEventListener('click', () => {
         }
     }
 
-    console.log(data);
     $.ajax({
         type: "POST",
         data: JSON.stringify(data),
@@ -27,6 +26,10 @@ document.querySelector('.login').addEventListener('click', () => {
         url: '/login'
     }).done(data => {
         M.toast({html: data.res});
+        if (data.ok)
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
     }).fail(console.log('failed'));
 });
 
@@ -55,6 +58,8 @@ document.querySelector('.register').addEventListener('click', () => {
     }).done(data => {
         M.toast({html: data.res});
         if (data.ok)
-            document.location.pathname = "/";
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
     });
 });
