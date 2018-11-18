@@ -7,6 +7,8 @@ const express = require('express'),
     bcrypt = require('bcrypt-nodejs'),
     session = require('express-session'),
     MongoStore = require('connect-mongo')(session),
+    nodemailer = require("nodemailer"),
+    xoauth2 = require('xoauth2'),
     app = express();
 
 let Car = require('./models/car'),
@@ -175,6 +177,27 @@ app.post('/login', (req, res) => {
             ok: true,
             res: 'Введенные данные не верны!'
         });
+    });
+});
+
+app.get('/sendemail', (req, res) => {
+    var transporter = nodemailer.createTransport('smtps://dimakasper98@gmail.com:1gmailpass@smtp.gmail.com');
+
+    // setup e-mail data with unicode symbols
+    var mailOptions = {
+        from: '"Fred Foo ?" <foo@blurdybloop.com>', // sender address
+        to: 'claywhoami@yandex.ru', // list of receivers
+        subject: 'Hello ✔', // Subject line
+        text: 'Hello world ?', // plaintext body
+        html: '<b>Hello world ?</b>' // html body
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message sent: ' + info.response);
     });
 });
 

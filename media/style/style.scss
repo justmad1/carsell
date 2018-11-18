@@ -6,7 +6,7 @@
 body, html {
     padding: 0;
     margin: 0;
-    min-width: 480px;
+    min-width: 660px;
 }
 
 #particles-js {
@@ -28,6 +28,14 @@ header, footer {
 img.car-badge {
     width: 100px;
     height: 100px;
+}
+
+li .collapsible-header {
+    margin-top: 10px;
+}
+
+.car-name {
+    margin-left: 50px;
 }
 
 .main {

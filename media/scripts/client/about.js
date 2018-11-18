@@ -26,24 +26,25 @@ function createEl(message) {
     document.querySelector('.feedback').appendChild(card);
 }
 
-document.querySelector('.btn-large').addEventListener('click', () => {
-    if (textarea.value) {
-        $.ajax({
-            type: "POST",
-            data: JSON.stringify({ message: textarea.value }),
-            contentType: 'application/json',
-            url: '/about'
-        }).done(data => {
-            console.log(data);
-            if (data.ok){
-                M.toast({ html: 'Ваш отзыв добавлен!' });
-                createEl(textarea.value);
-                textarea.value = "";
-            } else {
-                M.toast({ html: 'Возникла ошибка!' });
-            }
-            });
-    } else {
-        M.toast({html: 'Введите свой отзыв в поле!'});
-    }
-});
+if (document.querySelector('.btn-large'))
+    document.querySelector('.btn-large').addEventListener('click', () => {
+        if (textarea.value) {
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify({ message: textarea.value }),
+                contentType: 'application/json',
+                url: '/about'
+            }).done(data => {
+                console.log(data);
+                if (data.ok){
+                    M.toast({ html: 'Ваш отзыв добавлен!' });
+                    createEl(textarea.value);
+                    textarea.value = "";
+                } else {
+                    M.toast({ html: 'Возникла ошибка!' });
+                }
+                });
+        } else {
+            M.toast({html: 'Введите свой отзыв в поле!'});
+        }
+    });

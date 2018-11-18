@@ -1,23 +1,31 @@
 <% layout('index')%>
-<% block('title', "Модельный ряд") %>
+<% block('title',"Модельный ряд" ) %>
 <main class="main">
+    <div class="filter"></div>
     <div class="container">
-            <ul class="collapsible popout">
-                    <% cars.forEach(car => { %>
-                    <li>
-                        <div class="collapsible-header"><img class="car-badge" src="images/car.png" alt="car"> 
-                            <div class="collapsible-text">
-                                <span class="text-accent-1">
-                                    <%= car.color %>
-                                    <%= car.complectation %> 
-                                    <%= car.model %>
-                                </span> 
-                            </div>
-                            <span class="new badge"></span>
-                         </div>
-                        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, possimus.</span></div>
-                    </li>
-                    <% }) %>
-                </ul>
+        <ul class="collapsible popout">
+            <% cars.forEach(car=> { %>
+            <li class="car-item">
+                <div class="collapsible-header"><img
+                        class="car-badge" src="images/car.png"
+                        alt="car">
+                    <div style="width: 100%" class="collapsible-text valign-wrapper">
+                        <h4 class="car-name">
+                            <%= car.model %>
+                        </h4>
+                    </div>
+                    <span class="new badge"></span>
+                </div>
+                <div class="collapsible-body">
+                    <span>
+                        <%= car.color %>
+                        <%= car.complectation %>
+                    </span>
+                    <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, possimus.
+                    </span>
+                </div>
+            </li>
+            <% }) %>
+        </ul>
     </div>
 </main>

@@ -22,7 +22,9 @@
     "jquery": "^3.3.1",
     "mongoose": "^5.3.9",
     "morgan": "^1.9.1",
-    "particles.js": "^2.0.0"
+    "nodemailer": "^4.6.8",
+    "particles.js": "^2.0.0",
+    "xoauth2": "^1.2.0"
   },
   "engines": {
     "node": ">=6.0.0"
