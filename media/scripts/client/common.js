@@ -1,4 +1,4 @@
-//particlesJS.load('particles-js', 'scripts/assets/particles.json');
+particlesJS.load('particles-js', 'scripts/assets/particles.json');
 const menu = document.querySelector('.menu');
 
 [].slice.call(menu.children).forEach(item => {

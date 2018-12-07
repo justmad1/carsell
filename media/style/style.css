@@ -15,14 +15,17 @@ body, html {
   height: 100%;
   z-index: 1; }
 
+.white {
+  background-color: #fff; }
+
 header, footer {
   position: relative;
   z-index: 2;
   opacity: 0.9; }
 
 img.car-badge {
-  width: 100px;
-  height: 100px; }
+  width: 20%;
+  height: 20%; }
 
 li .collapsible-header {
   margin-top: 10px; }
@@ -45,3 +48,6 @@ li .collapsible-header {
 
 .feedback, .add_feedback, .info {
   margin: 100px 0; }
+
+.parameter {
+  margin-top: 200px; }

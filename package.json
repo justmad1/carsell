@@ -23,6 +23,7 @@
     "mongoose": "^5.3.9",
     "morgan": "^1.9.1",
     "nodemailer": "^4.6.8",
+    "nouislider": "^12.1.0",
     "particles.js": "^2.0.0",
     "xoauth2": "^1.2.0"
   },

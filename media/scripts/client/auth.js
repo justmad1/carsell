@@ -26,11 +26,18 @@ document.querySelector('.login').addEventListener('click', () => {
         url: '/login'
     }).done(data => {
         M.toast({html: data.res});
-        if (data.ok)
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
-    }).fail(console.log('failed'));
+        if (data.ok) {
+            if (!data.admin){
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    window.location.pathname = "/admin";
+                }, 1000);
+            }
+        }   
+        }).fail(M.toast({ html: data.res }));
 });
 
 document.querySelector('.register').addEventListener('click', () => {

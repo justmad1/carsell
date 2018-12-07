@@ -4,7 +4,7 @@
             <a href="/" class="brand-logo"> Cars <i style="margin-left: 22px;" class="small material-icons">time_to_leave</i></a>
             <ul id="nav-mobile" class="right">
                 <% if(user.id && user.login){ %>
-                    <li><a id="user" class="disabled" href="#"><%=user.login%></a></li>
+                    <li><a id="user" class="disabled" href="/cabinet"><%=user.login%></a></li>
                     <li><a id="logout" href="/logout">Выход</a></li>
                 <% } else{ %>
                     <li><a class="modal-trigger" href="#login">Войти</a></li>
@@ -16,8 +16,8 @@
             <ul class="tabs tabs-transparent menu">
                 <li class="tab"><a target="_self" href="/"> Главная </a></li>
                 <li class="tab"><a target="_self" href="/buy" >Модельный ряд</a></li>
-                <li class="tab"><a target="_self" href="/">Подержанные автомобили</a></li>
-                <li class="tab"><a target="_self" href="/sendemail">Финансовые программы</a></li>
+                <li class="tab"><a target="_self" href="/">Подержанные автомобили<span class="new badge red"></span></a></li>
+                <li class="tab"><a target="_self" href="/">Финансовые программы</a></li>
                 <li class="tab"><a target="_self" href="/about">О нас</a></li>
             </ul>
         </div>

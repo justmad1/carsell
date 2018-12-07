@@ -5,11 +5,23 @@ const schema = new Schema({
     color: {
         type: String,
     },
+    engine: {
+        type: String,
+    },
     model: {
         type: String,
     },
     complectation: {
         type: String,
+    },
+    price: {
+        type: String,
+    },
+    option: {
+        type: String,
+    },
+    date: {
+        type: Date
     }
 });
 

@@ -13,9 +13,11 @@ const express = require('express'),
 
 let Car = require('./models/car'),
     User = require('./models/user'),
+    Admin = require('./models/admin'),
     Order = require('./models/order'),
     Feedback = require('./models/feedback'),
-    dataObject = {};
+    dataObject = {}
+    resCars = [];
 
 //connection
 mongoose.connection
@@ -45,7 +47,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "media")));
 
-
 //routers
 app.get('/', (req, res) => {
     res.render('main', {
@@ -57,20 +58,72 @@ app.get('/', (req, res) => {
 });
 
 
+app.get('/cabinet', (req, res) => {
+    Admin.findOne({
+        _id: req.session.userId,
+        login: req.session.userLogin
+    }).then(user => {
+        if (user) {
+            res.redirect('/admin');
+        } else {
+            res.render('/');
+        }
+    });
+});
+
+
+app.post('/getcars', (req, res) => {
+    resCars = [];
+
+    if (req.body[0])
+        Car.find({ model: 'Model 1' }).then(cars => {
+            resCars = resCars.concat(cars);
+            console.log(ObjectId(cars[0]._id).getTimestamp());
+        });
+    if (req.body[1])
+        Car.find({ model: 'Model 2' }).then(cars => {
+            resCars = resCars.concat(cars);
+        });
+    if (req.body[2])
+        Car.find({ model: 'Model 3' }).then(cars => {
+            resCars = resCars.concat(cars);
+        });
+    
+    setTimeout(() => {
+        res.json({
+            ok: true,
+            data: resCars
+        });
+    }, 1000);
+});
+
+
 app.get('/add', (req, res) => {
-    res.render('add', {
-        user: {
-            id: req.session.userId,
-            login: req.session.userLogin
+    Admin.findOne({
+        _id: req.session.userId,
+        login: req.session.userLogin
+    }).then(user => {
+        if (user) {
+            res.render('add', {
+                user: {
+                    id: req.session.userId,
+                    login: req.session.userLogin
+                }
+            });
+        } else {
+            res.redirect('/');
         }
     });
 });
 
 app.post('/add', (req, res) => {
     Car.create({
-        color: req.body.color,
         model: req.body.model,
-        complectation: req.body.complectation
+        color: req.body.color,
+        engine: req.body.engine,
+        price: req.body.price,
+        complectation: req.body.complectation,
+        date: new Date()
     });
     res.redirect('/add');
 });
@@ -145,45 +198,64 @@ app.post('/register', (req, res) => {
 
 app.post('/login', (req, res) => {
     dataObject = req.body;
-    User.findOne({
+    Admin.findOne({
         login: dataObject.login
     })
     .then(user => {
         if (user) {
-            bcrypt.compare(dataObject.password, user.password, function(err, r) {
+            bcrypt.compare(dataObject.password, user.password, function (err, r) {
                 if (r) {
                     req.session.userId = user.id;
                     req.session.userLogin = user.login;
                     res.json({
                         ok: true,
+                        admin: true,
                         res: 'Успешно!'
                     });
                 }
-                else
+            });
+        } else {
+            User.findOne({
+                login: dataObject.login
+            })
+                .then(user => {
+                    if (user) {
+                        bcrypt.compare(dataObject.password, user.password, function (err, r) {
+                            if (r) {
+                                req.session.userId = user.id;
+                                req.session.userLogin = user.login;
+                                res.json({
+                                    ok: true,
+                                    admin: false,
+                                    res: 'Успешно!'
+                                });
+                            }
+                            else
+                                res.json({
+                                    ok: false,
+                                    res: 'Введенные данные не верны!'
+                                });
+                        });
+                    } else {
+                        res.json({
+                            ok: false,
+                            res: 'Введенные данные не верны!'
+                        });
+                    }
+                })
+                .catch(error => {
                     res.json({
                         ok: true,
                         res: 'Введенные данные не верны!'
-                    });  
-            });
-        } else {
-            res.json({
-                ok: true,
-                res: 'Введенные данные не верны!'
-            });
+                    });
+                });
         }
-    })
-    .catch(error => {
-        res.json({
-            ok: true,
-            res: 'Введенные данные не верны!'
-        });
     });
 });
 
 app.get('/sendemail', (req, res) => {
     var transporter = nodemailer.createTransport('smtps://dimakasper98@gmail.com:1gmailpass@smtp.gmail.com');
 
-    // setup e-mail data with unicode symbols
     var mailOptions = {
         from: '"Fred Foo ?" <foo@blurdybloop.com>', // sender address
         to: 'claywhoami@yandex.ru', // list of receivers
@@ -192,7 +264,6 @@ app.get('/sendemail', (req, res) => {
         html: '<b>Hello world ?</b>' // html body
     };
 
-    // send mail with defined transport object
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             return console.log(error);
@@ -204,6 +275,19 @@ app.get('/sendemail', (req, res) => {
 app.get('/logout',(req, res) => {
     req.session.destroy(() => {
         res.redirect('/');
+    });
+});
+
+app.get('/admin', (req, res) => {
+    Admin.findOne({
+        _id: req.session.userId,
+        login: req.session.userLogin
+    }).then(user => {
+        if (user) {
+            res.render('admin');
+        } else {
+            res.redirect('/');
+        }
     });
 });
 
