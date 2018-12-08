@@ -1,13 +1,19 @@
 data = [];
-let ulElement = document.querySelector('ul.popout');
+let ulElement = document.querySelector('ul.popout'),
+    i = 0,
+    items = [],
+    item = null;
 
-function render(item) {
+function render(item, i) {
+    //if (!item.available) return "";   // check for availability
+    items[i] = item;
     item.m = item.model.split(" ")[1];
     let diff = new Date() - new Date(item.date),
         badge = "",
         time = 0;
-    if (diff * 60 / 60e3) {
+    if (diff / 60e3 < 60) {
         time = Math.round(diff / 60e3);
+        if (time == 0) time += 1;
         badge = `<span class="new badge" data-badge-caption="минут назад">Добавлена ${time}</span>`;
     }
     return `
@@ -38,13 +44,14 @@ function render(item) {
                         <div>Цена<a href="#" class="secondary-content">${item.price}</a></div>
                     </li>
                 </ul>
-                <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>Оформить покупку</a>
+                <button id="nom${i}" data-target="buy" class="buy btn modal-trigger">Оформить покупку</button>
             </div>
         </li>
         `;
 }
 
 function renew() {
+    i = 0;
     document.querySelectorAll('input[type=checkbox]').forEach((item, i) => {
         data[i] = item.checked;
     });
@@ -57,14 +64,27 @@ function renew() {
     }).done(data => {
         ulElement.innerHTML = "";
         data.data.forEach(item => {
-            ulElement.innerHTML += render(item);
+            ulElement.innerHTML += render(item, i);
+            i++;
+        });
+
+        document.querySelectorAll('.buy').forEach(item => {
+            item.addEventListener('click', event => {
+                item = items[event.target.id.split("")[3]];
+                document.querySelector('.complectation').innerHTML = item.complectation;
+                document.querySelector('.price').innerHTML = item.price;
+                document.querySelector('.engine').innerHTML = item.engine;
+                document.querySelector('.color').innerHTML = item.color;
+                document.querySelector('.modal-car-name').innerHTML = item.model;
+                document.querySelector('.modal-car-badge').src = `http://localhost:3000/images/cars/${item.m}/${item.color}/car.png`;
+            });
         });
     });
 }
 
 document.querySelectorAll('input[type=checkbox]').forEach(item => {
     item.addEventListener('click', () => {
-        renew()
+        renew();
     });
 });
 

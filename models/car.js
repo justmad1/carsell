@@ -3,22 +3,25 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema({
     color: {
-        type: String,
+        type: String
     },
     engine: {
-        type: String,
+        type: String
     },
     model: {
-        type: String,
+        type: String
     },
     complectation: {
-        type: String,
+        type: String
     },
     price: {
-        type: String,
+        type: String
     },
     option: {
-        type: String,
+        type: String
+    },
+    available: {
+        type: Boolean
     },
     date: {
         type: Date

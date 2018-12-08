@@ -78,7 +78,6 @@ app.post('/getcars', (req, res) => {
     if (req.body[0])
         Car.find({ model: 'Model 1' }).then(cars => {
             resCars = resCars.concat(cars);
-            console.log(ObjectId(cars[0]._id).getTimestamp());
         });
     if (req.body[1])
         Car.find({ model: 'Model 2' }).then(cars => {
@@ -123,7 +122,8 @@ app.post('/add', (req, res) => {
         engine: req.body.engine,
         price: req.body.price,
         complectation: req.body.complectation,
-        date: new Date()
+        date: new Date(),
+        available: true
     });
     res.redirect('/add');
 });
@@ -139,6 +139,11 @@ app.get('/buy', (req, res) => {
         });
     });
 });
+
+app.post('/buy', (req, res) => {
+    
+});
+
 
 app.get('/about', (req, res) => {
     Feedback.find({}).then(f => {

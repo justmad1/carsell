@@ -25,7 +25,8 @@ header, footer {
 
 img.car-badge {
   width: 20%;
-  height: 20%; }
+  height: 20%;
+  margin: 0 8%; }
 
 li .collapsible-header {
   margin-top: 10px; }
