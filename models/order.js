@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-    client_login: {
+    client_id: {
         type: String,
     },
-    vin_number: {
+    car_id: {
         type: String,
     },
 });

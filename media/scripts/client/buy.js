@@ -2,10 +2,10 @@ data = [];
 let ulElement = document.querySelector('ul.popout'),
     i = 0,
     items = [],
-    item = null;
+    car = null;
 
 function render(item, i) {
-    //if (!item.available) return "";   // check for availability
+    if (!item.available) return "";   // check for availability
     items[i] = item;
     item.m = item.model.split(" ")[1];
     let diff = new Date() - new Date(item.date),
@@ -50,6 +50,17 @@ function render(item, i) {
         `;
 }
 
+function send() {
+    $.ajax({
+        type: "POST",
+        url: "/buycar",
+        contentType: 'application/json',
+        data: JSON.stringify(car)
+    }).done(data => {
+        M.toast( {html: data.message} );
+    });
+}
+
 function renew() {
     i = 0;
     document.querySelectorAll('input[type=checkbox]').forEach((item, i) => {
@@ -70,13 +81,13 @@ function renew() {
 
         document.querySelectorAll('.buy').forEach(item => {
             item.addEventListener('click', event => {
-                item = items[event.target.id.split("")[3]];
-                document.querySelector('.complectation').innerHTML = item.complectation;
-                document.querySelector('.price').innerHTML = item.price;
-                document.querySelector('.engine').innerHTML = item.engine;
-                document.querySelector('.color').innerHTML = item.color;
-                document.querySelector('.modal-car-name').innerHTML = item.model;
-                document.querySelector('.modal-car-badge').src = `http://localhost:3000/images/cars/${item.m}/${item.color}/car.png`;
+                car = items[event.target.id.split("")[3]];
+                document.querySelector('.complectation').innerHTML = car.complectation;
+                document.querySelector('.price').innerHTML = car.price;
+                document.querySelector('.engine').innerHTML = car.engine;
+                document.querySelector('.color').innerHTML = car.color;
+                document.querySelector('.modal-car-name').innerHTML = car.model;
+                document.querySelector('.modal-car-badge').src = `http://localhost:3000/images/cars/${car.m}/${car.color}/car.png`;
             });
         });
     });

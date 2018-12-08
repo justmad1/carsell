@@ -140,8 +140,29 @@ app.get('/buy', (req, res) => {
     });
 });
 
-app.post('/buy', (req, res) => {
-    
+app.post('/buycar', (req, res) => {
+    if (req.session.userId === undefined) {
+        res.json({
+            ok: false,
+            message: "Необходимо авторизоваться!"
+        });
+    } else {
+        Car.updateOne({
+            _id: req.body._id,
+        }, {
+            $set: { available: false }
+        }).then(cars => {
+            Order.create({
+                client_id: req.session.userId,
+                car_id: req.body._id
+            }).then(() => {
+                res.json({
+                    ok: true,
+                    message: "Автомобиль оформлен!"
+                });
+            });
+        });
+    }
 });
 
 
