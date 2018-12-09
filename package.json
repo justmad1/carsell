@@ -13,6 +13,7 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
+    "chart.js": "^2.7.3",
     "connect-mongo": "^2.0.1",
     "ejs": "^2.6.1",
     "ejs-blocks": "^0.1.4",

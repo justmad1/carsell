@@ -8,6 +8,12 @@ const schema = new Schema({
     car_id: {
         type: String,
     },
+    car_model: {
+        type: String,
+    },
+    login: {
+        type: String,
+    }
 });
 
 module.exports = mongoose.model('Order', schema);

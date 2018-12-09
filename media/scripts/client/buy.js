@@ -51,6 +51,7 @@ function render(item, i) {
 }
 
 function send() {
+    car.login = document.querySelector("#user").innerText;
     $.ajax({
         type: "POST",
         url: "/buycar",

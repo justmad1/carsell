@@ -21,8 +21,40 @@
         </nav>
     </header>
     <main class="main">
-        
+        <div id="piechart" style="width: 100%; height: 500px;"></div>
     </main>
-    <% include /scripts.ejs %>
+    <script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
+    <script  type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script  type="text/javascript">
+        (document.onload = () => {
+            $.ajax({
+                type: "POST",
+                url: "/getboughtcars",
+                contentType: 'application/json',
+            }).done(c => {
+                console.log(c);
+
+                google.charts.load('current', { 'packages': ['corechart'] });
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable([
+                        ['Модель', 'Количество'],
+                        ['Model 1', c.data[0]],
+                        ['Model 2', c.data[1]],
+                        ['Model 3', c.data[2]]
+                    ]);
+
+                    var options = {
+                        title: 'Проданные автомобили'
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                    chart.draw(data, options);
+                } 
+            });
+        })();
+    </script>
 </body>
 </html>

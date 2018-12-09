@@ -66,7 +66,12 @@ app.get('/cabinet', (req, res) => {
         if (user) {
             res.redirect('/admin');
         } else {
-            res.render('/');
+            res.render('client', {
+                user: {
+                    id: req.session.userId,
+                    login: req.session.userLogin
+                }
+            });
         }
     });
 });
@@ -94,6 +99,34 @@ app.post('/getcars', (req, res) => {
             data: resCars
         });
     }, 1000);
+});
+
+
+app.post('/getclientcars', (req, res) => {
+    Order.find({  })
+});
+
+
+app.post('/getboughtcars', (req, res) => {
+    resCars = [];
+
+    Order.find({ car_model: 'Model 1' }).then(cars => {
+        resCars[0] = cars.length;
+    });
+    Order.find({ car_model: 'Model 2' }).then(cars => {
+        resCars[1] = cars.length;
+    });
+    Order.find({ car_model: 'Model 3' }).then(cars => {
+        resCars[2] = cars.length;
+    }); 
+
+    setTimeout(() => {
+        console.log(resCars);
+        res.json({
+            data: resCars
+        });
+    }, 1000);
+    
 });
 
 
@@ -128,7 +161,6 @@ app.post('/add', (req, res) => {
     res.redirect('/add');
 });
 
-
 app.get('/buy', (req, res) => {
     Car.find({}).then(cars => {
         res.render('buy', {cars: cars,
@@ -154,7 +186,9 @@ app.post('/buycar', (req, res) => {
         }).then(cars => {
             Order.create({
                 client_id: req.session.userId,
-                car_id: req.body._id
+                car_id: req.body._id,
+                car_model: req.body.model,
+                login: req.body.login
             }).then(() => {
                 res.json({
                     ok: true,
