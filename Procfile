@@ -1,1 +1,1 @@
-web: node app.js
+web: PORT=3000 node app.js
