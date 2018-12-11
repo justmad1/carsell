@@ -41,6 +41,7 @@ document.querySelector('.login').addEventListener('click', () => {
 });
 
 document.querySelector('.register').addEventListener('click', () => {
+    debugger;
     fio = `${document.querySelector('input#first_name').value} ${document.querySelector('input#last_name').value}`;
     login = document.querySelector('input#email').value;
     password = document.querySelector('input#new_password').value;
