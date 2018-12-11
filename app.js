@@ -338,6 +338,15 @@ app.get('/logout',(req, res) => {
     });
 });
 
+app.get('/regadmin', (req, res) => {
+    bcrypt.hash('admin', null, null, function (err, hash) {
+        Admin.create({
+            login: 'admin',
+            password: hash
+        });
+    });
+});
+
 app.get('/admin', (req, res) => {
     Admin.findOne({
         _id: req.session.userId,
