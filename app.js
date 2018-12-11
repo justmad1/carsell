@@ -26,7 +26,7 @@ mongoose.connection
 mongoose.connect(config.MONGO_URL, { useNewUrlParser: true});
 
 app.listen(3000, function () {
-    console.log('Server started!');
+    console.log('Server started! 1');
 });
 
 //sets and uses
