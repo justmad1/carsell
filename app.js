@@ -26,7 +26,7 @@ let Car = require('./models/car'),
 // mongoose.connect(config.MONGO_URL, { useNewUrlParser: true});
 
 app.listen(3000, function () {
-    console.log('Server started! 2');
+    console.log('Server started! 3');
 });
 
 //sets and uses
