@@ -20,10 +20,10 @@ let Car = require('./models/car'),
     resCars = [];
 
 //connection
-// mongoose.connection
-// .on('error', error => console.error(error))
-// .once('open', () => console.log("connected to database"));
-// mongoose.connect(config.MONGO_URL, { useNewUrlParser: true});
+mongoose.connection
+.on('error', error => console.error(error))
+.once('open', () => console.log("connected to database"));
+mongoose.connect(config.MONGO_URL, { useNewUrlParser: true});
 
 app.listen(process.env.PORT || 3000, function () {
     console.log('Server started!');
