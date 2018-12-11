@@ -25,7 +25,7 @@ let Car = require('./models/car'),
 // .once('open', () => console.log("connected to database"));
 // mongoose.connect(config.MONGO_URL, { useNewUrlParser: true});
 
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
     console.log('Server started!');
 });
 
