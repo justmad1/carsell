@@ -16,14 +16,14 @@ let Car = require('./models/car'),
     Admin = require('./models/admin'),
     Order = require('./models/order'),
     Feedback = require('./models/feedback'),
-    dataObject = {}
+    dataObject = {},
     resCars = [];
 
 //connection
-mongoose.connection
-.on('error', error => console.error(error))
-.once('open', () => console.log("connected to database"));
-mongoose.connect(config.MONGO_URL, { useNewUrlParser: true});
+// mongoose.connection
+// .on('error', error => console.error(error))
+// .once('open', () => console.log("connected to database"));
+// mongoose.connect(config.MONGO_URL, { useNewUrlParser: true});
 
 app.listen(3000, function () {
     console.log('Server started! 1');
