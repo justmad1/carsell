@@ -260,6 +260,7 @@ app.post('/admin', (req, res) => {
         date: new Date(),
         available: true
     });
+    res.redirect('/admin');
 });
 
 app.get('/buy', (req, res) => {
