@@ -18,7 +18,7 @@ function render(item, i) {
     }
     return `
         <li class="car-item">
-            <div class="collapsible-header"><img class="car-badge" src="images/cars/${item.m}/${item.color}/car.png" alt="car">
+            <div class="collapsible-header">
                 <div style="width: 100%" class="collapsible-text valign-wrapper">
                     <h4 class="car-name">
                         ${item.model}
@@ -41,6 +41,9 @@ function render(item, i) {
                         <div>Мощность двигателя<a href="#" class="secondary-content">${item.engine}</a></div>
                     </li>
                     <li class="collection-item">
+                        <div>Пробег<a href="#" class="mileage secondary-content">${item.mileage}</a></div>
+                    </li>
+                    <li class="collection-item">
                         <div>Цена<a href="#" class="secondary-content">${item.price}</a></div>
                     </li>
                 </ul>
@@ -54,10 +57,11 @@ function send() {
     car.login = document.querySelector("#user").innerText;
     $.ajax({
         type: "POST",
-        url: "/buycar",
+        url: "/buyusedcar",
         contentType: 'application/json',
         data: JSON.stringify(car)
     }).done(data => {
+        console.log(data);
         M.toast({ html: data.message });
     });
 }
@@ -88,7 +92,7 @@ function renew() {
                 document.querySelector('.engine').innerHTML = car.engine;
                 document.querySelector('.color').innerHTML = car.color;
                 document.querySelector('.modal-car-name').innerHTML = car.model;
-                document.querySelector('.modal-car-badge').src = `media/images/cars/${car.m}/${car.color}/car.png`;
+                document.querySelector('.mileage').innerHTML = car.mileage;
             });
         });
     });

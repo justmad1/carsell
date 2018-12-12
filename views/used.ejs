@@ -1,6 +1,9 @@
 <% layout('index')%>
 <% block('title'," Подержанные автомобили" ) %>
 <main class="main">
+    <div class="container white">
+        <ul class="collapsible popout"></ul>
+    </div>
     <div id="buy" class="modal">
         <div class="row">
             <div class="col s8">
@@ -21,10 +24,12 @@
                 <div>Мощность двигателя<a href="#" class="engine secondary-content"></a></div>
             </li>
             <li class="collection-item">
+                <div>Пробег<a href="#" class="mileage secondary-content"></a></div>
+            </li>
+            <li class="collection-item">
                 <div>Цена<a href="#" class="secondary-content price"></a></div>
             </li>
         </ul>
-
         <div class="modal-footer">
             <a href="#" onclick="send()" class="modal-close waves-effect waves-green btn-flat">Оформить покупку</a>
         </div>

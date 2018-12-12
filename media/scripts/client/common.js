@@ -22,13 +22,8 @@ switch (document.title) {
         break;
     }
 
-    case "Финансовые автомобили": {
-        menu.children[3].firstChild.classList.add('active');
-        break;
-    }
-
     case "О нас": {
-        menu.children[4].firstChild.classList.add('active');
+        menu.children[3].firstChild.classList.add('active');
         break;
     }
 }

@@ -12,6 +12,7 @@ const express = require('express'),
     app = express();
 
 let Car = require('./models/car'),
+    UsedCar = require('./models/usedcar'),
     User = require('./models/user'),
     Admin = require('./models/admin'),
     Order = require('./models/order'),
@@ -46,6 +47,25 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "media")));
+
+function sendmail(car, login) {
+    var transporter = nodemailer.createTransport('smtps://dimakasper98@gmail.com:1gmailpass@smtp.gmail.com');
+
+    var mailOptions = {
+        from: '"Cars Admin" <admin@cars.com>', // sender address
+        to: 'claywhoami@yandex.ru', // list of receivers
+        subject: 'Новый автомобиль заказан', // Subject line
+        text: `Пользователь ${login} только что заказал автомобиль ${car.model}`, // plaintext body
+        html: `Пользователь ${login} только что заказал автомобиль ${car.model}` // html body
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message sent: ' + info.response);
+    });
+}
 
 //routers
 app.get('/', (req, res) => {
@@ -102,8 +122,20 @@ app.post('/getcars', (req, res) => {
 });
 
 
+app.post('/getusedcars', (req, res) => {
+    UsedCar.find({}).then(cars => {
+        res.json({
+            ok: true,
+            data: cars
+        });
+    });
+});
+
+
 app.post('/getclientcars', (req, res) => {
-    Order.find({  })
+    Order.find({ login: req.session.userLogin }).then(orders => {
+        console.log(orders);
+    });
 });
 
 
@@ -118,10 +150,15 @@ app.post('/getboughtcars', (req, res) => {
     });
     Order.find({ car_model: 'Model 3' }).then(cars => {
         resCars[2] = cars.length;
-    }); 
+    });
+    Order.find({}).then(cars => {
+        cars = cars.filter(car => {
+            return car.car_model.split(" ")[0] != "Model";
+        });
+        resCars[3] = cars.length;
+    });
 
     setTimeout(() => {
-        console.log(resCars);
         res.json({
             data: resCars
         });
@@ -222,6 +259,18 @@ app.get('/buy', (req, res) => {
     });
 });
 
+app.get('/used', (req, res) => {
+    UsedCar.find({}).then(cars => {
+        res.render('used', {
+            cars: cars,
+            user: {
+                id: req.session.userId,
+                login: req.session.userLogin
+            }
+        });
+    });
+});
+
 app.post('/buycar', (req, res) => {
     if (req.session.userId === undefined) {
         res.json({
@@ -240,12 +289,42 @@ app.post('/buycar', (req, res) => {
                 car_model: req.body.model,
                 login: req.body.login
             }).then(() => {
+                sendmail(req.body, req.session.userLogin);
                 res.json({
                     ok: true,
                     message: "Автомобиль оформлен!"
                 });
             });
         });
+    }
+});
+
+
+app.post('/buyusedcar', (req, res) => {
+    if (req.session.userId === undefined) {
+        res.json({
+            ok: false,
+            message: "Необходимо авторизоваться!"
+        });
+    } else {
+        UsedCar.updateOne({
+            _id: req.body._id,
+        }, {
+                $set: { available: false }
+            }).then(cars => {
+                Order.create({
+                    client_id: req.session.userId,
+                    car_id: req.body._id,
+                    car_model: req.body.model,
+                    login: req.body.login
+                }).then(() => {
+                    sendmail(req.body, req.session.userLogin);
+                    res.json({
+                        ok: true,
+                        message: "Автомобиль оформлен!"
+                    });
+                });
+            });
     }
 });
 
@@ -363,24 +442,6 @@ app.post('/login', (req, res) => {
     });
 });
 
-app.get('/sendemail', (req, res) => {
-    var transporter = nodemailer.createTransport('smtps://dimakasper98@gmail.com:1gmailpass@smtp.gmail.com');
-
-    var mailOptions = {
-        from: '"Fred Foo ?" <foo@blurdybloop.com>', // sender address
-        to: 'claywhoami@yandex.ru', // list of receivers
-        subject: 'Hello ✔', // Subject line
-        text: 'Hello world ?', // plaintext body
-        html: '<b>Hello world ?</b>' // html body
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('Message sent: ' + info.response);
-    });
-});
 
 app.get('/logout',(req, res) => {
     req.session.destroy(() => {
