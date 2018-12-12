@@ -98,12 +98,6 @@ function renew() {
     });
 }
 
-document.querySelectorAll('input[type=checkbox]').forEach(item => {
-    item.addEventListener('click', () => {
-        renew();
-    });
-});
-
 setTimeout(() => {
     renew();
 }, 1000);

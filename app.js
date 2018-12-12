@@ -133,9 +133,23 @@ app.post('/getusedcars', (req, res) => {
 
 
 app.post('/getclientcars', (req, res) => {
+    resCars = [];
+    console.log(req.session.userLogin);
     Order.find({ login: req.session.userLogin }).then(orders => {
-        console.log(orders);
+        orders.forEach(order => {
+            Car.find({ model: order.car_model }).then(car => {
+                if (car.length) resCars.push(car[0]);
+            });
+            UsedCar.find({ model: order.car_model }).then(usedcar => {
+                if (usedcar.length) resCars.push(usedcar[0]);
+            });
+        });
     });
+    setTimeout(() => {
+        res.json({
+            cars: resCars
+        });
+    }, 1000);
 });
 
 
@@ -290,6 +304,7 @@ app.post('/buycar', (req, res) => {
                 login: req.body.login
             }).then(() => {
                 sendmail(req.body, req.session.userLogin);
+
                 res.json({
                     ok: true,
                     message: "Автомобиль оформлен!"

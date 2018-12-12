@@ -1,3 +1,9 @@
 (document.onload = () => {
-    $('.datepicker').datepicker();
+    $.ajax({
+        type: "POST",
+        url: "/getclientcars",
+        contentType: 'application/json'
+    }).then(data => {
+        
+    });
 })();
