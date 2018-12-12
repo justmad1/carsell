@@ -11,48 +11,75 @@
 </head>
 <body>
     <header>
-        <nav>
+        <nav class="nav-extended">
             <div class="nav-wrapper">
                 <a href="/" class="brand-logo"> Cars Admin<i style="margin-left: 22px;" class="small material-icons">time_to_leave</i></a>
                 <ul id="nav-mobile" class="right">
                     <li><a id="logout" href="/logout">Выход</a></li>
                 </ul>
             </div>
+            <div class="nav-content">
+                <ul class="tabs tabs-transparent menu">
+                    <li class="tab"><a target="_self" href="#"> Статистика </a></li>
+                    <li class="tab"><a target="_self" href="#">Добавление автомобиля</a></li>
+                    <li class="tab"><a target="_self" href="#"></a></li>
+                </ul>
+            </div>
         </nav>
     </header>
     <main class="main">
-        <div id="piechart" style="width: 100%; height: 500px;"></div>
+
     </main>
-    <script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
-    <script  type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <% include /scripts.ejs %>
     <script  type="text/javascript">
         (document.onload = () => {
-            $.ajax({
-                type: "POST",
-                url: "/getboughtcars",
-                contentType: 'application/json',
-            }).done(c => {
-                console.log(c);
 
-                google.charts.load('current', { 'packages': ['corechart'] });
-                google.charts.setOnLoadCallback(drawChart);
+            let menu = document.querySelectorAll('.menu>li'),
+                main = document.querySelector('main.main');
 
-                function drawChart() {
-                    var data = google.visualization.arrayToDataTable([
-                        ['Модель', 'Количество'],
-                        ['Model 1', c.data[0]],
-                        ['Model 2', c.data[1]],
-                        ['Model 3', c.data[2]]
-                    ]);
+            menu[0].addEventListener('click', () => {
+                $.ajax({
+                    type: "POST",
+                    url: "/getboughtcars",
+                    contentType: 'application/json',
+                }).done(c => {
+                    console.log(c);
 
-                    var options = {
-                        title: 'Проданные автомобили'
-                    };
+                    google.charts.load('current', { 'packages': ['corechart'] });
+                    google.charts.setOnLoadCallback(drawChart);
 
-                    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                    function drawChart() {
+                        var data = google.visualization.arrayToDataTable([
+                            ['Модель', 'Количество'],
+                            ['Model 1', c.data[0]],
+                            ['Model 2', c.data[1]],
+                            ['Model 3', c.data[2]]
+                        ]);
 
-                    chart.draw(data, options);
-                } 
+                        var options = {
+                            title: 'Проданные автомобили'
+                        };
+
+                        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                        chart.draw(data, options);
+                    }
+                });
+
+                main.innerHTML = `<div id="piechart" style="width: 100%; height: 500px;"></div>`;
+            });
+            
+            menu[1].addEventListener('click', () => {
+                $.ajax({
+                    type: "GET",
+                    url: "/add",
+                    contentType: 'application/json'
+                }).done(data => {
+                    main.innerHTML = data.html;
+                    setTimeout(() => {
+                        $('select').formSelect();
+                    }, 500);
+                });
             });
         })();
     </script>

@@ -136,11 +136,62 @@ app.get('/add', (req, res) => {
         login: req.session.userLogin
     }).then(user => {
         if (user) {
-            res.render('add', {
-                user: {
-                    id: req.session.userId,
-                    login: req.session.userLogin
-                }
+            res.json({
+                html: `
+                    <div class="container top-100">
+                    <form method="POST">
+                        <div class="row">
+                            <div class="input-field col s3">
+                                <input value="" id="first_name2" type="text" class="validate" name="color">
+                                <label class="active" for="first_name2">Color</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <input value="" id="first_name3" type="text" class="validate" name="price">
+                                <label class="active" for="first_name3">Price</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <select name="model">
+                                    <option value="Model 1">Model 1
+                                    </option>
+                                    <option value="Model 2">Model 2</option>
+                                    <option value="Model 3">Model 3</option>
+                                </select>
+                                <label>Select model</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <select name="complectation">
+                                    <option value="Standart">Standart
+                                    </option>
+                                    <option value="Standart Plus">Standart Plus</option>
+                                    <option value="Premium">Premium</option>
+                                    <option value="Premium Plus">Premium Plus</option>
+                                    <option value="Luxury">Luxury</option>
+                                </select>
+                                <label>Select complectation</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <select name="engine">
+                                    <option value="250 kW">250 kW
+                                    </option>
+                                    <option value="300 kW">300 kW</option>
+                                    <option value="450 kW">450 kW</option>
+                                    <option value="500 kW">500 kW</option>
+                                </select>
+                                <label>Select engine</label>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Добавить автомобиль
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                `
             });
         } else {
             res.redirect('/');
@@ -148,7 +199,7 @@ app.get('/add', (req, res) => {
     });
 });
 
-app.post('/add', (req, res) => {
+app.post('/admin', (req, res) => {
     Car.create({
         model: req.body.model,
         color: req.body.color,
@@ -158,7 +209,6 @@ app.post('/add', (req, res) => {
         date: new Date(),
         available: true
     });
-    res.redirect('/add');
 });
 
 app.get('/buy', (req, res) => {
